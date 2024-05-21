@@ -3,6 +3,7 @@
 
 #include <AccelStepper.h>
 #include <MultiStepper.h>
+#include "motorLib.h"
 #include <stdlib.h>
 
 #if ARDUINO >= 100
@@ -34,16 +35,6 @@ private:
     state currentState = IDLE;
     directionOfSpinning rotDirection = CLOCKWISE;
 
-    //Pins for various hardware
-    int rotorEnginePin;
-    int rotorDirPin;
-
-    int linearEnginePin;
-    int linearDirPin;
-
-    int sensorEchoPin;
-    int sensorTrigPin;
-
     //Helper members
     int currentPosition = 0;
     int stepsForFullRotation;
@@ -52,8 +43,11 @@ private:
     /*Accelstepper objects for the rotational movment of robot and
     linear movment of its arm
     */
-    AccelStepper rotSteper(AccelStepper::FULL2WIRE, rotorEnginePin, rotorDirPin);
-    AccelStepper linSteper(AccelStepper::FULL2WIRE, linearEnginePin, linearDirPin);
+    motor LinMotor;
+    motor RotMotor;
+
+    int sensorEchoPin;
+    int sensorTrigPin;
 
     void transistionToRun();
     void transistionToIdle();
@@ -63,7 +57,7 @@ private:
     float getDistance();
     bool checkForGlass();
 public:
-    stateClass::stateClass(int rotorEnginePin, int rotorDirPin, int linearEnginePin, int linearDirPin, int sensorEchoPin, int sensorTrigPin, int stepsForFullRotation=200, float maxDistance=20.0f);
+    stateClass::stateClass(int rotorEnginePin, int rotorDirPin, int rotorMicroStep, int linearEnginePin, int linearDirPin, int linearMicroStep, int sensorEchoPin, int sensorTrigPin, int stepsForFullRotation=200, float maxDistance=20.0f);
     ~stateClass();
 
     void startRunning();

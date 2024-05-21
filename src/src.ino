@@ -1,4 +1,5 @@
 #include "./headers/stateClass.h"
+#include "./headers/motorLib.h"
 
 #define INFDISTANCE 20.0f
 #define trigPin 4

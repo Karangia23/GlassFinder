@@ -1,16 +1,14 @@
 #include "stateClass.h"
+#include "motorLib.h"
 
-stateClass::stateClass(int rotorEnginePin, int rotorDirPin, int linearEnginePin, int linearDirPin, int sensorEchoPin, int sensorTrigPin, int stepsForFullRotation=200, float maxDistance=20.0f)
+stateClass::stateClass(int rotorEnginePin, int rotorDirPin, int rotorMicroStep, int linearEnginePin, int linearDirPin, int linearMicroStep, int sensorEchoPin, int sensorTrigPin, int stepsForFullRotation=200, float maxDistance=20.0f)
 {
-    stateClass::rotorEnginePin = rotorEnginePin;
-    stateClass::rotorDirPin = rotorDirPin;
-
-    stateClass::linearEnginePin = linearEnginePin;
-    stateClass::linearDirPin = linearDirPin;
+    stateClass::LinMotor = motor(linearEnginePin, linearDirPin, linearMicroStep, 100);
+    stateClass::RotMotor = motor(rotorEnginePin, rotorDirPin, rotorMicroStep, 50);
 
     stateClass::sensorEchoPin = sensorEchoPin;
     stateClass::sensorTrigPin = sensorTrigPin;
-
+    
     stateClass::stepsForFullRotation = stepsForFullRotation;
     
     stateClass::maxDistance = maxDistance;
