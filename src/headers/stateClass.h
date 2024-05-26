@@ -1,17 +1,22 @@
+// ----------------------------------------------------------------------------
+// stateClass.h
+//  
+// Description:
+// Class used as an steering method of the NURT robot.
+// The whole process is based on the state machine abstraction.
+// The machine cycle consists of 4 states 
+//
+// Authors:
+// Karangia23
+// ----------------------------------------------------------------------------
 #ifndef STATECLASS_H
 #define STATECLASS_H
 
-#include <AccelStepper.h>
-#include <MultiStepper.h>
 #include "motorLib.h"
 #include <stdlib.h>
 
-#if ARDUINO >= 100
+
 #include <Arduino.h>
-#else
-#include <WProgram.h>
-#include <wiring.h>
-#endif
 
 #define stepsFor1mili 100;
 
@@ -39,8 +44,10 @@ private:
     int currentPosition = 0;
     int stepsForFullRotation;
     float maxDistance;
+    bool stopRunning = false;
+    bool foundGlass = false;
 
-    /*Accelstepper objects for the rotational movment of robot and
+    /*motorLib objects for the rotational movment of robot and
     linear movment of its arm
     */
     motor LinMotor;
@@ -52,18 +59,21 @@ private:
     void transistionToRun();
     void transistionToIdle();
     void transistionToPour();
+    void transistionToSearch();
 
     int convertDistanceToSteps(float distance);
     float getDistance();
+    
     bool checkForGlass();
+    
 public:
     stateClass::stateClass(int rotorEnginePin, int rotorDirPin, int rotorMicroStep, int linearEnginePin, int linearDirPin, int linearMicroStep, int sensorEchoPin, int sensorTrigPin, int stepsForFullRotation=200, float maxDistance=20.0f);
     ~stateClass();
 
     void startRunning();
-    void stopRunning();
     void doCurrentState();
-    void resetPosition();
+    void resetRotorPosition();
+    void switchEmergencyStop();
 };
 
 #endif STATECLASS_H
