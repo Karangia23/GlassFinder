@@ -1,3 +1,14 @@
+// ----------------------------------------------------------------------------
+// motorLib.h
+//  
+// Description:
+// Library used to control 2 pin stepper motors.
+// It is supposed to be as simple as possible.
+// The machine cycle consists of 4 states 
+//
+// Authors:
+// Karangia23
+// ----------------------------------------------------------------------------
 #ifndef MOTORLIB_H
 #define MOTORLIB_H
 
@@ -9,6 +20,7 @@ private:
     int speed;
     int time;
     int microStep;
+    int distance = 0;
     enum direction {
         backward,
         forward

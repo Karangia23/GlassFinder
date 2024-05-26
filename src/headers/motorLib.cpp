@@ -12,6 +12,7 @@ motor::motor(int stepPin, int dirPin, int microStep = 1, int speed=500)
 
 motor::~motor()
 {
+
 }
 
 
@@ -21,6 +22,7 @@ void motor::runContinously(){
     delayMicroseconds(motor::time);  
     digitalWrite(motor::stepPin, LOW); 
     delayMicroseconds(motor::time); 
+    motor::distance++;
 }
 
 void motor::changeDirection(){

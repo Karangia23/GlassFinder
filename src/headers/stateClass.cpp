@@ -19,6 +19,8 @@ stateClass::~stateClass()
     //TODO deconstrcutor
 }
 
+//state machine methods
+
 void stateClass::doCurrentState()
 {
     switch (currentState)
@@ -30,17 +32,37 @@ void stateClass::doCurrentState()
 
         case RUN:
         {
-            //constantly changing positions value
+            if (stopRunning == false)
+            {
+                if(stateClass::checkForGlass())
+                {
+                    transistionToSearch();
+                    break;
+                }
+
+                stateClass::LinMotor.runContinously();
+            }
             break;
         }
 
         case LOOKFORGLASS:
         {
+            if (stopRunning == false)
+            {
+                //check 3 last values of saved distance
+                //if the latest vale is gettings bigger take middle value
+            }
+            
+
             break;
         }
 
         case POUR:
         {
+            if (stopRunning == false)
+            {
+                //pour liquid and transistion to run 
+            }
             break;
         }
     }
@@ -51,7 +73,7 @@ void stateClass::transistionToRun()
     currentState = RUN;
 
     if(currentPosition != 0)
-        resetPosition();
+        resetRotorPosition();
 }
 
 void stateClass::transistionToPour()
@@ -61,16 +83,27 @@ void stateClass::transistionToPour()
 
 void stateClass::transistionToIdle()
 {
+    resetRotorPosition();
     currentState = IDLE;
+}
+
+void stateClass::transistionToSearch()
+{
+    currentState = LOOKFORGLASS;
 }
 
 bool stateClass::checkForGlass()
 {
     if(getDistance() < maxDistance)
     {
-        transistionToPour();
+        return true;
     }
+
+    else
+        return false;
 }
+
+// ultrasound sensor methods
 
 float stateClass::getDistance(){
 
@@ -92,10 +125,14 @@ int stateClass::convertDistanceToSteps(float distance)
 
 
 
-void stateClass::resetPosition()
+void stateClass::resetRotorPosition()
 {
 
 }
 
+void stateClass::switchEmergencyStop()
+{
+    stopRunning = !stopRunning;
+}
 
 
